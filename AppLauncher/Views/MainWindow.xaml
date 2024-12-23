@@ -4,6 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:models="clr-namespace:AppLauncher.Models"
     xmlns:prism="http://prismlibrary.com/"
     xmlns:viewModels="clr-namespace:AppLauncher.ViewModels"
     Title="{Binding Title}"
@@ -31,7 +32,21 @@
         <ListBox
             Grid.Row="0"
             Background="{StaticResource DarkBgBrush}"
-            ItemsSource="{Binding ApplicationInfos}" />
+            ItemsSource="{Binding ApplicationInfos}">
+            <ListBox.ItemTemplate>
+
+                <DataTemplate DataType="{x:Type models:ApplicationInfo}">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock
+                            Width="180"
+                            Text="{Binding DisplayName}"
+                            TextTrimming="CharacterEllipsis" />
+
+                        <TextBlock Text="{Binding FullPath, StringFormat=: {0}}" />
+                    </StackPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
 
         <Grid Grid.Row="1" Margin="0,5">
             <Grid.ColumnDefinitions>

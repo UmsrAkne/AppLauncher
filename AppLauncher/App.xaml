@@ -8,5 +8,15 @@
         <SolidColorBrush x:Key="DarkBgBrush" Color="#333344" />
         <SolidColorBrush x:Key="ForegroundBrush" Color="WhiteSmoke" />
         <sys:Double x:Key="BasicFontSize">16.0</sys:Double>
+
+        <Style TargetType="TextBox">
+            <Setter Property="FontSize" Value="{StaticResource BasicFontSize}" />
+            <Setter Property="Background" Value="{StaticResource DarkBgBrush}" />
+            <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}" />
+        </Style>
+        <Style TargetType="TextBlock">
+            <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}" />
+            <Setter Property="FontSize" Value="{StaticResource BasicFontSize}" />
+        </Style>
     </Application.Resources>
 </prism:PrismApplication>

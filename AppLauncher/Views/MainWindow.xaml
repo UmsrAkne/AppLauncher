@@ -83,9 +83,21 @@
                     <Setter Property="ContextMenu">
                         <Setter.Value>
                             <ContextMenu>
-                                <MenuItem Command="{Binding RestartAppAsyncCommand}">
+                                <MenuItem Command="{Binding RestartAppAsyncCommand}" IsEnabled="{Binding CanRestart}">
                                     <MenuItem.Header>
-                                        <TextBlock Foreground="Black" Text="Restart" />
+                                        <Border IsEnabled="{Binding CanRestart}">
+                                            <Border.Style>
+                                                <Style TargetType="Border">
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding CanRestart}" Value="false">
+                                                            <Setter Property="Opacity" Value="0.4" />
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Border.Style>
+
+                                            <TextBlock Foreground="Black" Text="Restart" />
+                                        </Border>
                                     </MenuItem.Header>
                                 </MenuItem>
                             </ContextMenu>

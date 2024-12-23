@@ -50,6 +50,7 @@ namespace AppLauncher.ViewModels
                         });
 
                         appInfo.IsRunning = true;
+                        appInfo.CanRestart = true;
                     });
                 }
                 catch (Exception ex)

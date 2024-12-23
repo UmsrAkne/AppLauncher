@@ -8,9 +8,5 @@ namespace AppLauncher.ViewModels
         private string title = "App Launcher";
 
         public string Title { get => title; set => SetProperty(ref title, value); }
-
-        public MainWindowViewModel()
-        {
-        }
     }
 }

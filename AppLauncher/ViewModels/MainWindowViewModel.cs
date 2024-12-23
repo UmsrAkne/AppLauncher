@@ -50,6 +50,7 @@ namespace AppLauncher.ViewModels
                         });
 
                         appInfo.IsRunning = true;
+                        appInfo.CanRestart = true;
                     });
                 }
                 catch (Exception ex)
@@ -72,6 +73,11 @@ namespace AppLauncher.ViewModels
                 {
                     DisplayName = "Application1",
                     FullPath = @$"{Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory)}\test\test.exe",
+                },
+                new ApplicationInfo()
+                {
+                    DisplayName = "bat1",
+                    FullPath = @$"{Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory)}\test\testbat.bat",
                 },
                 new ApplicationInfo() { DisplayName = "testName1", FullPath = @"C:\test\test1\test2\test3\text4", },
                 new ApplicationInfo() { DisplayName = "testName2", FullPath = @"C:\test\test1\test2\test3\text4", },

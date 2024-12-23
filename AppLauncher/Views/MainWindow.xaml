@@ -7,15 +7,46 @@
     xmlns:prism="http://prismlibrary.com/"
     xmlns:viewModels="clr-namespace:AppLauncher.ViewModels"
     Title="{Binding Title}"
-    Width="525"
-    Height="350"
+    Width="600"
+    Height="400"
     d:DataContext="{d:DesignInstance viewModels:MainWindowViewModel}"
     prism:ViewModelLocator.AutoWireViewModel="True"
+    Background="{StaticResource DarkBgBrush}"
     mc:Ignorable="d">
 
+    <Grid Margin="5">
+        <Grid.Resources>
+            <Style TargetType="TextBox">
+                <Setter Property="FontSize" Value="{StaticResource BasicFontSize}" />
+                <Setter Property="Background" Value="{StaticResource DarkBgBrush}" />
+                <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}" />
+            </Style>
+        </Grid.Resources>
 
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
 
-    <Grid>
-        <ContentControl prism:RegionManager.RegionName="ContentRegion" />
+        <ListBox Grid.Row="0" Background="{StaticResource DarkBgBrush}" />
+
+        <Grid Grid.Row="1" Margin="0,5">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <TextBox Grid.Column="0" Width="100" />
+
+            <TextBox Grid.Column="1" Margin="5,0" />
+
+            <Button
+                Grid.Column="2"
+                Width="100"
+                HorizontalAlignment="Right"
+                Content="Registration"
+                DockPanel.Dock="Right" />
+        </Grid>
     </Grid>
 </Window>

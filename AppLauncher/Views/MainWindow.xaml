@@ -45,6 +45,28 @@
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
                         <StackPanel Orientation="Horizontal">
+
+                            <!--  フォントサイズを StaticResource で設定しようとすると、なぜかプレビューが効かなくなる。  -->
+                            <TextBlock
+                                Width="10"
+                                FontSize="18"
+                                Foreground="{StaticResource ForegroundBrush}">
+
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock">
+                                        <Style.Triggers>
+
+                                            <DataTrigger Binding="{Binding IsRunning}" Value="True">
+                                                <Setter Property="Text" Value="*" />
+                                            </DataTrigger>
+
+                                            <DataTrigger Binding="{Binding IsRunning}" Value="False">
+                                                <Setter Property="Text" Value="" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
                             <TextBlock
                                 Width="180"
                                 Text="{Binding DisplayName}"

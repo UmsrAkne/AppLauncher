@@ -7,7 +7,7 @@
     <Application.Resources>
         <SolidColorBrush x:Key="DarkBgBrush" Color="#333344" />
         <SolidColorBrush x:Key="ForegroundBrush" Color="WhiteSmoke" />
-        <sys:Double x:Key="BasicFontSize">16.0</sys:Double>
+        <sys:Double x:Key="BasicFontSize">15.0</sys:Double>
 
         <Style TargetType="TextBox">
             <Setter Property="FontSize" Value="{StaticResource BasicFontSize}" />

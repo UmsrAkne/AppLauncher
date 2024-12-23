@@ -3,19 +3,130 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:models="clr-namespace:AppLauncher.Models"
     xmlns:prism="http://prismlibrary.com/"
     xmlns:viewModels="clr-namespace:AppLauncher.ViewModels"
     Title="{Binding Title}"
-    Width="525"
-    Height="350"
+    Width="800"
+    Height="300"
     d:DataContext="{d:DesignInstance viewModels:MainWindowViewModel}"
     prism:ViewModelLocator.AutoWireViewModel="True"
+    Background="{StaticResource DarkBgBrush}"
     mc:Ignorable="d">
 
+    <Grid Margin="5">
+        <Grid.Resources>
+            <Style TargetType="TextBox">
+                <Setter Property="FontSize" Value="{StaticResource BasicFontSize}" />
+                <Setter Property="Background" Value="{StaticResource DarkBgBrush}" />
+                <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}" />
+            </Style>
+        </Grid.Resources>
 
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
 
-    <Grid>
-        <ContentControl prism:RegionManager.RegionName="ContentRegion" />
+        <ListBox
+            Grid.Row="0"
+            Background="{StaticResource DarkBgBrush}"
+            ItemsSource="{Binding ApplicationListViewModel.ApplicationInfos}"
+            SelectedItem="{Binding ApplicationListViewModel.SelectedItem}">
+            <ListBox.ItemTemplate>
+
+                <DataTemplate DataType="{x:Type models:ApplicationInfo}">
+                    <ContentControl>
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="MouseDoubleClick">
+                                <i:InvokeCommandAction Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=ListBox}, Path=DataContext.ExecuteAppCommand}" />
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                        <StackPanel Orientation="Horizontal">
+
+                            <!--  フォントサイズを StaticResource で設定しようとすると、なぜかプレビューが効かなくなる。  -->
+                            <TextBlock
+                                Width="10"
+                                FontSize="18"
+                                Foreground="{StaticResource ForegroundBrush}">
+
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock">
+                                        <Style.Triggers>
+
+                                            <DataTrigger Binding="{Binding IsRunning}" Value="True">
+                                                <Setter Property="Text" Value="*" />
+                                            </DataTrigger>
+
+                                            <DataTrigger Binding="{Binding IsRunning}" Value="False">
+                                                <Setter Property="Text" Value="" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+                            <TextBlock
+                                Width="180"
+                                Text="{Binding DisplayName}"
+                                TextTrimming="CharacterEllipsis" />
+
+                            <TextBlock Text="{Binding FullPath, StringFormat=: {0}}" />
+                        </StackPanel>
+                    </ContentControl>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+
+            <ListBox.ItemContainerStyle>
+                <Style TargetType="ListBoxItem">
+                    <Setter Property="ContextMenu">
+                        <Setter.Value>
+                            <ContextMenu>
+                                <MenuItem Command="{Binding RestartAppAsyncCommand}" IsEnabled="{Binding CanRestart}">
+                                    <MenuItem.Header>
+                                        <Border IsEnabled="{Binding CanRestart}">
+                                            <Border.Style>
+                                                <Style TargetType="Border">
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding CanRestart}" Value="false">
+                                                            <Setter Property="Opacity" Value="0.4" />
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Border.Style>
+
+                                            <TextBlock Foreground="Black" Text="Restart" />
+                                        </Border>
+                                    </MenuItem.Header>
+                                </MenuItem>
+                            </ContextMenu>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </ListBox.ItemContainerStyle>
+        </ListBox>
+
+        <Grid Grid.Row="1" Margin="0,5,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <TextBox Grid.Column="0" Width="100" />
+
+            <TextBox Grid.Column="1" Margin="5,0" />
+
+            <Button
+                Grid.Column="2"
+                Width="100"
+                HorizontalAlignment="Right"
+                DockPanel.Dock="Right">
+                <Button.Content>
+                    <TextBlock Foreground="Black" Text="Registration" />
+                </Button.Content>
+            </Button>
+        </Grid>
     </Grid>
 </Window>

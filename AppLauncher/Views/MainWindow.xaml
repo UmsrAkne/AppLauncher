@@ -77,6 +77,22 @@
                     </ContentControl>
                 </DataTemplate>
             </ListBox.ItemTemplate>
+
+            <ListBox.ItemContainerStyle>
+                <Style TargetType="ListBoxItem">
+                    <Setter Property="ContextMenu">
+                        <Setter.Value>
+                            <ContextMenu>
+                                <MenuItem Command="{Binding RestartAppAsyncCommand}">
+                                    <MenuItem.Header>
+                                        <TextBlock Foreground="Black" Text="Restart" />
+                                    </MenuItem.Header>
+                                </MenuItem>
+                            </ContextMenu>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </ListBox.ItemContainerStyle>
         </ListBox>
 
         <Grid Grid.Row="1" Margin="0,5">

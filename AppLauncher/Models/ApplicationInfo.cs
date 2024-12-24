@@ -60,7 +60,7 @@ namespace AppLauncher.Models
         /// </summary>
         public AsyncDelegateCommand ExecuteAppCommand => new AsyncDelegateCommand(async () =>
         {
-            if (!File.Exists(FullPath))
+            if (!File.Exists(FullPath) || IsRunning)
             {
                 return;
             }

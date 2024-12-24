@@ -41,7 +41,7 @@
                     <ContentControl>
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="MouseDoubleClick">
-                                <i:InvokeCommandAction Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=ListBox}, Path=DataContext.ExecuteAppCommand}" />
+                                <i:InvokeCommandAction Command="{Binding ExecuteAppCommand}" />
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
                         <StackPanel Orientation="Horizontal">

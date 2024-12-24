@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
-using System.IO;
-using System.Threading.Tasks;
 using AppLauncher.Models;
+using Prism.Commands;
 using Prism.Mvvm;
 
 namespace AppLauncher.ViewModels
@@ -12,6 +11,7 @@ namespace AppLauncher.ViewModels
     public class MainWindowViewModel : BindableBase
     {
         private string title = "App Launcher";
+        private ApplicationInfo inputApplicationInfo = new ();
 
         public MainWindowViewModel()
         {
@@ -22,46 +22,22 @@ namespace AppLauncher.ViewModels
 
         public ApplicationListViewModel ApplicationListViewModel { get; set; } = new ();
 
-        /// <summary>
-        /// ApplicationListViewModel の中で、選択中のアイテムを起動します。<br/>
-        /// 選択中のアイテムが無い場合や、無効なパスが入っている場合は処理をせず動作を終了します。
-        /// </summary>
-        public AsyncDelegateCommand ExecuteAppCommand => new AsyncDelegateCommand(async () =>
+        public ApplicationInfo InputApplicationInfo
         {
-            var appInfo = ApplicationListViewModel.SelectedItem;
+            get => inputApplicationInfo;
+            set => SetProperty(ref inputApplicationInfo, value);
+        }
 
-            if (appInfo == null || !File.Exists(appInfo.FullPath))
+        public DelegateCommand RegisterAppCommand => new DelegateCommand(() =>
+        {
+            var info = InputApplicationInfo;
+            if (string.IsNullOrWhiteSpace(info.DisplayName) || string.IsNullOrWhiteSpace(info.FullPath))
             {
                 return;
             }
 
-            var filePath = appInfo.FullPath;
-
-            if (File.Exists(filePath))
-            {
-                try
-                {
-                    await Task.Run(() =>
-                    {
-                        appInfo.Process = Process.Start(new ProcessStartInfo
-                        {
-                            FileName = filePath,
-                            UseShellExecute = true,
-                        });
-
-                        appInfo.IsRunning = true;
-                        appInfo.CanRestart = true;
-                    });
-                }
-                catch (Exception ex)
-                {
-                    Debug.WriteLine($"Error: {ex.Message}");
-                }
-            }
-            else
-            {
-                Debug.WriteLine($"The file '{filePath}' does not exist.");
-            }
+            ApplicationListViewModel.ApplicationInfos.Add(info);
+            InputApplicationInfo = new ApplicationInfo();
         });
 
         [Conditional("DEBUG")]

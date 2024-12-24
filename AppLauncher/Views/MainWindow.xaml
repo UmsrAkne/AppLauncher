@@ -41,7 +41,7 @@
                     <ContentControl>
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="MouseDoubleClick">
-                                <i:InvokeCommandAction Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=ListBox}, Path=DataContext.ExecuteAppCommand}" />
+                                <i:InvokeCommandAction Command="{Binding ExecuteAppCommand}" />
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
                         <StackPanel Orientation="Horizontal">
@@ -114,18 +114,26 @@
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
 
-            <TextBox Grid.Column="0" Width="100" />
+            <TextBox
+                Grid.Column="0"
+                Width="100"
+                Text="{Binding InputApplicationInfo.DisplayName}" />
 
-            <TextBox Grid.Column="1" Margin="5,0" />
+            <TextBox
+                Grid.Column="1"
+                Margin="5,0"
+                Text="{Binding InputApplicationInfo.FullPath}" />
 
             <Button
                 Grid.Column="2"
                 Width="100"
                 HorizontalAlignment="Right"
+                Command="{Binding RegisterAppCommand}"
                 DockPanel.Dock="Right">
                 <Button.Content>
                     <TextBlock Foreground="Black" Text="Registration" />
                 </Button.Content>
+
             </Button>
         </Grid>
     </Grid>

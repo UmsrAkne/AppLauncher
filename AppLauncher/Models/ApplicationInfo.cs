@@ -1,5 +1,7 @@
 using System;
 using System.Diagnostics;
+using System.IO;
+using System.Threading.Tasks;
 using Prism.Mvvm;
 
 namespace AppLauncher.Models
@@ -49,6 +51,46 @@ namespace AppLauncher.Models
             {
                 Debug.WriteLine($"新しいアプリケーションの起動に失敗しました: {ex.Message}");
                 CanRestart = false;
+            }
+        });
+
+        /// <summary>
+        /// ApplicationListViewModel の中で、選択中のアイテムを起動します。<br/>
+        /// 選択中のアイテムが無い場合や、無効なパスが入っている場合は処理をせず動作を終了します。
+        /// </summary>
+        public AsyncDelegateCommand ExecuteAppCommand => new AsyncDelegateCommand(async () =>
+        {
+            if (!File.Exists(FullPath) || IsRunning)
+            {
+                return;
+            }
+
+            var filePath = FullPath;
+
+            if (File.Exists(filePath))
+            {
+                try
+                {
+                    await Task.Run(() =>
+                    {
+                        Process = Process.Start(new ProcessStartInfo
+                        {
+                            FileName = filePath,
+                            UseShellExecute = true,
+                        });
+
+                        IsRunning = true;
+                        CanRestart = true;
+                    });
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine($"Error: {ex.Message}");
+                }
+            }
+            else
+            {
+                Debug.WriteLine($"The file '{filePath}' does not exist.");
             }
         });
     }

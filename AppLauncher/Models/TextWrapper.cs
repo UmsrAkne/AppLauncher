@@ -31,7 +31,7 @@ namespace AppLauncher.Models
         {
             const int major = 0;
             const int minor = 3;
-            const int patch = 0;
+            const int patch = 1;
 
             Version = $"{major}.{minor}.{patch}" + " (" + "20241225" + "a" + ")";
         }

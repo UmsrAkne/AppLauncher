@@ -8,7 +8,7 @@
     xmlns:models="clr-namespace:AppLauncher.Models"
     xmlns:prism="http://prismlibrary.com/"
     xmlns:viewModels="clr-namespace:AppLauncher.ViewModels"
-    Title="{Binding Title}"
+    Title="{Binding TextWrapper.Title}"
     Width="800"
     Height="300"
     d:DataContext="{d:DesignInstance viewModels:MainWindowViewModel}"

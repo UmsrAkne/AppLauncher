@@ -10,7 +10,6 @@ namespace AppLauncher.ViewModels
     // ReSharper disable once ClassNeverInstantiated.Global
     public class MainWindowViewModel : BindableBase
     {
-        private string title = "App Launcher";
         private ApplicationInfo inputApplicationInfo = new ();
 
         public MainWindowViewModel()
@@ -18,7 +17,7 @@ namespace AppLauncher.ViewModels
             SetDummies();
         }
 
-        public string Title { get => title; set => SetProperty(ref title, value); }
+        public TextWrapper TextWrapper { get; set; } = new ();
 
         public ApplicationListViewModel ApplicationListViewModel { get; set; } = new ();
 

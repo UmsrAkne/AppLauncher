@@ -16,6 +16,12 @@
     Background="{StaticResource DarkBgBrush}"
     mc:Ignorable="d">
 
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding LoadFromJsonAsync}" />
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+
     <Grid Margin="5">
         <Grid.Resources>
             <Style TargetType="TextBox">

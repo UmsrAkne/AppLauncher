@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
@@ -43,6 +44,39 @@ namespace AppLauncher.ViewModels
             InputApplicationInfo = new ApplicationInfo();
 
             await SaveToJsonAsync();
+        });
+
+        /// <summary>
+        /// JSON からリストを読み込んで追加します。アプリの起動時のイベントに合わせて実行します。
+        /// </summary>
+        public AsyncDelegateCommand LoadFromJsonAsync => new AsyncDelegateCommand(async () =>
+        {
+            if (!File.Exists(jsonFilePath))
+            {
+                return;
+            }
+
+            try
+            {
+                var json = await File.ReadAllTextAsync(jsonFilePath);
+                var simplifiedList = JsonSerializer.Deserialize<List<SimplifiedApplicationInfo>>(json);
+
+                if (simplifiedList != null)
+                {
+                    foreach (var item in simplifiedList)
+                    {
+                        ApplicationListViewModel.ApplicationInfos.Add(new ApplicationInfo
+                        {
+                            DisplayName = item.DisplayName,
+                            FullPath = item.FullPath,
+                        });
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"エラー: JSON 読み込み中に問題が発生しました。{ex.Message}");
+            }
         });
 
         /// <summary>

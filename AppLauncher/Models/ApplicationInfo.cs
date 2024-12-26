@@ -14,7 +14,6 @@ namespace AppLauncher.Models
         private string fullPath = string.Empty;
         private string displayName = string.Empty;
         private bool isRunning;
-        private Process process;
         private bool canRestart;
 
         public string FullPath { get => fullPath; set => SetProperty(ref fullPath, value); }
@@ -22,8 +21,6 @@ namespace AppLauncher.Models
         public string DisplayName { get => displayName; set => SetProperty(ref displayName, value); }
 
         public bool IsRunning { get => isRunning; set => SetProperty(ref isRunning, value); }
-
-        public Process Process { get => process; set => SetProperty(ref process, value); }
 
         public bool CanRestart { get => canRestart; set => SetProperty(ref canRestart, value); }
 
@@ -93,5 +90,7 @@ namespace AppLauncher.Models
                 Debug.WriteLine($"The file '{filePath}' does not exist.");
             }
         });
+
+        private Process Process { get; set; }
     }
 }

@@ -14,7 +14,7 @@ namespace AppLauncher.ViewModels
     // ReSharper disable once ClassNeverInstantiated.Global
     public class MainWindowViewModel : BindableBase
     {
-        private readonly string jsonFilePath = "appInfos.json";
+        private const string JsonFilePath = "appInfos.json";
         private ApplicationInfo inputApplicationInfo = new ();
 
         public MainWindowViewModel()
@@ -29,7 +29,7 @@ namespace AppLauncher.ViewModels
         public ApplicationInfo InputApplicationInfo
         {
             get => inputApplicationInfo;
-            set => SetProperty(ref inputApplicationInfo, value);
+            private set => SetProperty(ref inputApplicationInfo, value);
         }
 
         public AsyncDelegateCommand RegisterAppCommand => new AsyncDelegateCommand(async () =>
@@ -51,14 +51,14 @@ namespace AppLauncher.ViewModels
         /// </summary>
         public AsyncDelegateCommand LoadFromJsonAsync => new AsyncDelegateCommand(async () =>
         {
-            if (!File.Exists(jsonFilePath))
+            if (!File.Exists(JsonFilePath))
             {
                 return;
             }
 
             try
             {
-                var json = await File.ReadAllTextAsync(jsonFilePath);
+                var json = await File.ReadAllTextAsync(JsonFilePath);
                 var simplifiedList = JsonSerializer.Deserialize<List<SimplifiedApplicationInfo>>(json);
 
                 if (simplifiedList != null)
@@ -99,7 +99,7 @@ namespace AppLauncher.ViewModels
                     WriteIndented = true, // 整形された JSON にする
                 });
 
-                await File.WriteAllTextAsync(jsonFilePath, json);
+                await File.WriteAllTextAsync(JsonFilePath, json);
             }
             catch (Exception ex)
             {
@@ -120,7 +120,7 @@ namespace AppLauncher.ViewModels
                 new ApplicationInfo()
                 {
                     DisplayName = "bat1",
-                    FullPath = @$"{Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory)}\test\testbat.bat",
+                    FullPath = @$"{Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory)}\test\testBat.bat",
                 },
                 new ApplicationInfo() { DisplayName = "testName1", FullPath = @"C:\test\test1\test2\test3\text4", },
                 new ApplicationInfo() { DisplayName = "testName2", FullPath = @"C:\test\test1\test2\test3\text4", },

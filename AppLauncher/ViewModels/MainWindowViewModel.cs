@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.IO;
+using System.Linq;
+using System.Text.Json;
+using System.Threading.Tasks;
 using AppLauncher.Models;
-using Prism.Commands;
 using Prism.Mvvm;
 
 namespace AppLauncher.ViewModels
@@ -10,6 +13,7 @@ namespace AppLauncher.ViewModels
     // ReSharper disable once ClassNeverInstantiated.Global
     public class MainWindowViewModel : BindableBase
     {
+        private readonly string jsonFilePath = "appInfos.json";
         private ApplicationInfo inputApplicationInfo = new ();
 
         public MainWindowViewModel()
@@ -27,7 +31,7 @@ namespace AppLauncher.ViewModels
             set => SetProperty(ref inputApplicationInfo, value);
         }
 
-        public DelegateCommand RegisterAppCommand => new DelegateCommand(() =>
+        public AsyncDelegateCommand RegisterAppCommand => new AsyncDelegateCommand(async () =>
         {
             var info = InputApplicationInfo;
             if (string.IsNullOrWhiteSpace(info.DisplayName) || string.IsNullOrWhiteSpace(info.FullPath))
@@ -37,7 +41,37 @@ namespace AppLauncher.ViewModels
 
             ApplicationListViewModel.ApplicationInfos.Add(info);
             InputApplicationInfo = new ApplicationInfo();
+
+            await SaveToJsonAsync();
         });
+
+        /// <summary>
+        /// JSON にリストを保存します。
+        /// </summary>
+        private async Task SaveToJsonAsync()
+        {
+            try
+            {
+                var simplifiedList = ApplicationListViewModel.ApplicationInfos
+                    .Select(app => new SimplifiedApplicationInfo
+                    {
+                        DisplayName = app.DisplayName,
+                        FullPath = app.FullPath,
+                    })
+                    .ToList();
+
+                var json = JsonSerializer.Serialize(simplifiedList, new JsonSerializerOptions
+                {
+                    WriteIndented = true, // 整形された JSON にする
+                });
+
+                await File.WriteAllTextAsync(jsonFilePath, json);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"エラー: JSON 保存中に問題が発生しました。{ex.Message}");
+            }
+        }
 
         [Conditional("DEBUG")]
         private void SetDummies()

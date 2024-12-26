@@ -29,11 +29,11 @@ namespace AppLauncher.Models
         [Conditional("RELEASE")]
         private void SetVersion()
         {
-            const int major = 0;
-            const int minor = 3;
-            const int patch = 1;
+            const int major = 1;
+            const int minor = 0;
+            const int patch = 0;
 
-            Version = $"{major}.{minor}.{patch}" + " (" + "20241225" + "a" + ")";
+            Version = $"{major}.{minor}.{patch}" + " (" + "20241226" + "a" + ")";
         }
 
         [Conditional("DEBUG")]

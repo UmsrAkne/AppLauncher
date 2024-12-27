@@ -31,9 +31,9 @@ namespace AppLauncher.Models
         {
             const int major = 1;
             const int minor = 0;
-            const int patch = 0;
+            const int patch = 1;
 
-            Version = $"{major}.{minor}.{patch}" + " (" + "20241226" + "a" + ")";
+            Version = $"{major}.{minor}.{patch}" + " (" + "20241227" + "a" + ")";
         }
 
         [Conditional("DEBUG")]

@@ -5,6 +5,7 @@
     xmlns:prism="http://prismlibrary.com/"
     xmlns:sys="clr-namespace:System">
     <Application.Resources>
+        <SolidColorBrush x:Key="LightBgBrush" Color="#444455" />
         <SolidColorBrush x:Key="DarkBgBrush" Color="#333344" />
         <SolidColorBrush x:Key="ForegroundBrush" Color="WhiteSmoke" />
         <sys:Double x:Key="BasicFontSize">15.0</sys:Double>

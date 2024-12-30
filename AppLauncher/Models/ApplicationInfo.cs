@@ -41,8 +41,7 @@ namespace AppLauncher.Models
             try
             {
                 LogWriter.AppendAppStartLog(FullPath);
-                Process = Process.Start(FullPath);
-                CanRestart = true;
+                await ExecuteAppCommand.ExecuteAsync();
             }
             catch (Exception ex)
             {
@@ -75,6 +74,16 @@ namespace AppLauncher.Models
                             FileName = filePath,
                             UseShellExecute = true,
                         });
+
+                        if (Process != null)
+                        {
+                            Process.EnableRaisingEvents = true;
+                            Process.Exited += (_, _) =>
+                            {
+                                IsRunning = false;
+                                CanRestart = false;
+                            };
+                        }
 
                         IsRunning = true;
                         CanRestart = true;

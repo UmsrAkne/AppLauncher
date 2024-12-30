@@ -34,19 +34,18 @@ namespace AppLauncher.Models
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"プロセスの終了中にエラーが発生しました: {ex.Message}");
+                LogWriter.ErrorLog($"プロセスの終了中にエラーが発生しました: {ex.Message}");
                 return;
             }
 
             try
             {
-                Debug.WriteLine($"新しいアプリケーション {FullPath} を起動します...");
-                Process = Process.Start(FullPath);
-                CanRestart = true;
+                LogWriter.AppendAppStartLog(FullPath);
+                await ExecuteAppCommand.ExecuteAsync();
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"新しいアプリケーションの起動に失敗しました: {ex.Message}");
+                LogWriter.ErrorLog($"新しいアプリケーションの起動に失敗しました: {ex.Message}");
                 CanRestart = false;
             }
         });
@@ -76,18 +75,29 @@ namespace AppLauncher.Models
                             UseShellExecute = true,
                         });
 
+                        if (Process != null)
+                        {
+                            Process.EnableRaisingEvents = true;
+                            Process.Exited += (_, _) =>
+                            {
+                                IsRunning = false;
+                                CanRestart = false;
+                            };
+                        }
+
                         IsRunning = true;
                         CanRestart = true;
+                        LogWriter.AppendAppStartLog(filePath);
                     });
                 }
                 catch (Exception ex)
                 {
-                    Debug.WriteLine($"Error: {ex.Message}");
+                    LogWriter.ErrorLog($"ファイルを開く際にエラーが発生しました: {ex.Message}");
                 }
             }
             else
             {
-                Debug.WriteLine($"The file '{filePath}' does not exist.");
+                LogWriter.ErrorLog($"開こうとしたファイルが存在しません: {filePath}");
             }
         });
 
